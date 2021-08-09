@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\EmployersController;
 use App\Models\Unit;
 use App\Models\Employer;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Models\Employee;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,25 +62,26 @@ use App\Http\Controllers\PostController;
 //     ]);
 // });
 
+// Route::resource('/employer', EmployersController::class);
+
 Route::get('/', function() {
     return view('home', [
         "title" => "Home",
+        "active" => "home"
     ]);
 });
 
-Route::get('/employers', function() {
-    return view('employers', [
-        "title" => "Pegawai",
-        "employers" => Employer::first()->get(),
-        "units" => Unit::all(),
+Route::get('/employees', [EmployeesController::class, 'index']);
+
+Route::get('/employee/{employee:username}', function(Employee $employee) {
+    // dd($employer);
+    return view('employee', [
+        "title" => "Detail Pegawai",
+        "active" => "pegawai",
+        "employer" => $employee,
     ]);
 });
 
-Route::get('/employers/{unit:slug}', function(Unit $unit) {
-    // dd($unit);
-    return view('employers', [
-        "title" => "Pegawai $unit->name",
-        "employers" => $unit->employer->load('unit'),
-        "units" => Unit::with(['employer'])->get(),
-    ]);
-});
+Route::get('/employees/{unit:slug}', [EmployeesController::class, 'unit']);
+
+

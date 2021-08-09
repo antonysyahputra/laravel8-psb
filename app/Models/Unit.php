@@ -11,8 +11,13 @@ class Unit extends Model
 
     protected $guarded = ['id'];
 
-    public function employer()
+    // public function employer()
+    // {
+    //     return $this->hasMany(Employee::class);
+    // }
+    
+    public function employee()
     {
-        return $this->hasMany(Employer::class);
+        return $this->hasMany(Employee::class);
     }
 }
