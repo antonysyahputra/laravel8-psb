@@ -10,8 +10,15 @@ class EmployeesController extends Controller
 {
     public function index()
     {
+
+        $title = '';
+        if (request('unit')) {
+            $unit = Unit::firstWhere('slug', request('unit'));
+            $title = $unit->name;
+        }
+
         return view('employees', [
-            "title" => "Pegawai",
+            "title" => "Pegawai ". $title,
             "active" => "pegawai",
             // "employees" => Employee::paginate(10),
             "employees" => Employee::with(['unit'])->latest()->Filter(request(['search', 'unit']))->paginate(10)->withQueryString(),
@@ -19,16 +26,22 @@ class EmployeesController extends Controller
         ]);
     }
 
-    public function unit(Unit $unit)
+    public function create()
     {
-        // dd(Employee::first()->unit('name')->paginate(10));
-        return view('employees', [
-        "title" => "Pegawai",
-        "active" => "pegawai",
-        // "employees" => $unit->employee()->paginate(10),
-        "employees" => $unit->employee->load('unit')->paginate(10),
-        "units" => Unit::first()->get(),
-        // "units" => $unit->employee,
+        return view('employees.create', [
+            "title" => "Tambah Data",
+            "active" => "pegawai",
+            "units" => Unit::with('employee')->get(),
         ]);
     }
+
+    // public function unit(Unit $unit)
+    // {
+    //     return view('employees', [
+    //     "title" => "Pegawai",
+    //     "active" => "pegawai",
+    //     "employees" => $unit->employee->load('unit')->paginate(10),
+    //     "units" => Unit::first()->get(),
+    //     ]);
+    // }
 }

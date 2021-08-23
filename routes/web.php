@@ -1,13 +1,16 @@
 <?php
 
-use App\Http\Controllers\EmployeesController;
-use App\Http\Controllers\EmployersController;
 use App\Models\Unit;
-use App\Models\Employer;
 use App\Models\User;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Models\Category;
 use App\Models\Employee;
+// use App\Models\Employer;
+use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\PostController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,50 +23,6 @@ use App\Models\Employee;
 |
 */
 
-// Route::get('/', function () {
-//     return view('home', [
-//         "title" => "Home",
-//         'array' => ['satu' => 1, 'dua' => 2]
-//     ]);
-// });
-
-// Route::get('/post', [PostController::class, 'index']);
-// Route::get('posts/{post:slug}', [PostController::class, 'show']);
-
-// Route::get('/categories', function(){
-//     return view('categories', [
-//         'title' => 'Post Cateories',
-//         'categories' => Category::all()
-//     ]);
-// });
-// Route::get('/categories/{category:slug}', function(Category $category) {
-//     return view('posts',[
-//         'title' => "Post By : $category->name",
-//         'posts' => $category->posts->load('category', 'user'),
-//     ]);
-// });
-
-// Route::get('/authors/{author:username}', function(User $author) {
-//     return view('posts', [
-//         'title' => 'User Post',
-//         'posts' => $author->posts->load('category', 'user'),
-//     ]);
-// });
-
-
-
-
-// Route::get('/about', function () {
-//     return view('about', [
-//         "title" => "About",
-//         "nama" => "Antony Syahputra",
-//         "email" => "anto@gmail.com",
-//         "image" => "antony.jpg",
-//     ]);
-// });
-
-// Route::resource('/employer', EmployersController::class);
-
 Route::get('/', function() {
     return view('home', [
         "title" => "Home",
@@ -71,7 +30,8 @@ Route::get('/', function() {
     ]);
 });
 
-Route::get('/employees', [EmployeesController::class, 'index']);
+Route::get('/employees', [EmployeesController::class, 'index'])->middleware('auth');
+Route::get('/employees/create', [EmployeesController::class, 'create']);
 
 Route::get('/employee/{employee:username}', function(Employee $employee) {
     // dd($employer);
@@ -83,5 +43,24 @@ Route::get('/employee/{employee:username}', function(Employee $employee) {
 });
 
 Route::get('/employees/{unit:slug}', [EmployeesController::class, 'unit']);
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+
+
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+
+Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::post('/logout', [LoginController::class, 'logout']);
+
+// Route::middleware(['auth', 'second'])->group(function () {
+    
+// });
+
+Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
+
+Route::post('/register', [RegisterController::class, 'store']);
+
+
 
 

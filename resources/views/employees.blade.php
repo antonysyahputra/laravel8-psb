@@ -1,16 +1,32 @@
 @extends('layouts.main')
 
 @section('container')
-
-<h1>Daftar {{ $title }}</h1>
+<h2>Daftar {{ $title }}</h2>
 <div class="row">
     <div class="col-md-8">
-            <div class="position-relative mt-2">
+            {{-- <div class="position-relative mt-2">
             @foreach ($units as $unit)
                 <a href="/employees?unit={{ $unit->slug }}" class="btn btn-primary mb-3 badge">{{ $unit->name }}</a>
             @endforeach
                 <a href="/employees" class="btn btn-secondary mb-3 badge">REFRESH...</a>
                 <a href="/employees" class="btn btn-primary mb-3 badge">Tambah Data</a>
+            </div> --}}
+            <div class="position-relative mt-2">
+
+                <div class="dropdown d-inline">
+                    <a class="btn btn-primary dropdown-toggle badge" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      Unit
+                    </a>
+                  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        @foreach ($units as $unit)
+                        <li><a class="dropdown-item" href="/employees?unit={{ $unit->slug }}">{{ $unit->name }}</a></li>
+                        @endforeach
+                      
+                    </ul>
+                  </div>
+                    <a href="/employees" class="btn btn-secondary mb-3 badge">REFRESH...</a>
+                    <a href="/employees/create" class="btn btn-primary mb-3 badge">Tambah Data</a>
             </div>
     </div>
     <div class="col-md-4">
