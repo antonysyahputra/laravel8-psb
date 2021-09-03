@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Employee extends Model
 {
     use HasFactory;
+
+    protected $with = ['unit'];
+
+    protected $table = "employees";
 
     public function scopeFilter($query, array $filters) {
 
@@ -29,5 +34,12 @@ class Employee extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    // export import excel
+    public function getEmployee()
+    {
+        $employees = DB::table('employees')->select('name', 'no_hp', 'unit_id')->get()->$request->toArray();
+        return $employees;
     }
 }

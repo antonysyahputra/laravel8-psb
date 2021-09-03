@@ -61,6 +61,11 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 
 Route::post('/register', [RegisterController::class, 'store']);
 
+// export import exel
+Route::get('importExportView', [EmployeesController::class, 'importExportView']);
+Route::get('export', [EmployeesController::class, 'export'])->name('export');
+Route::post('import', [EmployeesController::class, 'import'])->name('import');
+
 
 
 

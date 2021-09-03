@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Exports\EmployeesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeesController extends Controller
 {
@@ -33,6 +35,25 @@ class EmployeesController extends Controller
             "active" => "pegawai",
             "units" => Unit::with('employee')->get(),
         ]);
+    }
+
+
+
+    public function importExportView()
+    {
+       return view('import');
+    }
+
+    public function export()
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
+    }
+
+    public function import()
+    {
+        Excel::import(new EmployeesImport,request()->file('file'));
+
+        return back();
     }
 
     // public function unit(Unit $unit)
